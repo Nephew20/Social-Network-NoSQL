@@ -6,20 +6,13 @@ const userSchema = new Schema (
         username: {
             type: String,
             unique: true, 
-            required: 'Must have an username',
+            required: true,
             trim: true
         },
         email: {
             type: String, 
-            required: 'Must hava an email',
+            required: true,
             unique: true,
-            validate: {
-                validator: function (value) {
-                  const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-                  return emailRegex.test(value);
-                },
-                message: 'Please provide a valid email address',
-            },
         },
         
         thoughts: [
@@ -50,3 +43,7 @@ userSchema
 .get(function () {
     return this.friends.length
 })
+
+const User = model('User', userSchema);
+
+module.exports = User;
