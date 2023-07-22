@@ -17,7 +17,6 @@ module.exports = {
     try {
       const userData = await User.findOne({ _id: req.params.userId })
         .select('__v')
-        .populate('friends')
         .populate('thoughts')
 
       if (!userData) {
@@ -78,9 +77,12 @@ module.exports = {
   //Add a friend to the user's friend list
   async addFriend(req, res) {
     try {
+
+      friendData = await User.create(req.body)
+
       const userData = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { friends: req.params.friendId } },
+        { $push: { friends: friendData.friendId } },
         { new: true, runValidators: true }
       )
 
@@ -108,7 +110,7 @@ module.exports = {
         return res.status(404).json({ message: 'No user with this id!' });
       }
 
-      res.json({ message: 'User successfully deleted!' });
+      res.json({ message: 'Friend successfully deleted!' });
     } catch (err) {
       res.status(500).json(err);
     }

@@ -42,13 +42,8 @@ module.exports = {
         { $push: { thoughts: thoughtData } },
         { new: true }
       );
-      
-      const userThoughts = {
-        thought: thoughtData,
-        user: user
-      };
-      
-      res.json(userThoughts);
+          
+      res.json(user);
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
@@ -78,7 +73,7 @@ module.exports = {
   //delete a thought
   async deleteThought(req, res) {
     try {
-      const thoughtData = await Thought.findOneAndDelete({ _id: req.params.userId });
+      const thoughtData = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
 
       if (!thoughtData) {
         return res.status(404).json({ message: 'No thought with this id!' });
@@ -124,7 +119,7 @@ module.exports = {
         return res.status(404).json({ message: 'No thought with this id!' });
       }
 
-      res.json({ message: 'Thought successfully deleted!' });
+      res.json({ message: 'Reaction successfully deleted!' });
     } catch (err) {
       res.status(500).json(err);
     }
